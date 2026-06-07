@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duckrowd — K-POP 팬 이벤트 펀딩</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">Duckrowd</a>
+      <div class="search-wrap">
+        <input type="search" class="search-input" placeholder="프로젝트, 아티스트, 총대 검색" aria-label="검색">
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="create-project-btn">프로젝트 올리기</button>
+        <button type="button" class="btn btn-primary" id="login-nav-btn">로그인/회원가입</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="카테고리">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>카테고리</a></li>
+      <li class="nav-item"><a href="/" class="nav-link active">홈</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>상시 판매</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>인기</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>신규</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>공개예정</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" data-demo>마감임박</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-text">
+            <h1 id="hero-title">내 최애의 생일, 안전하고 투명하게 축하해요</h1>
+            <p id="hero-subtitle">덕라우드와 함께하는 K-POP 팬 주최 이벤트 펀딩</p>
+            <button type="button" class="btn btn-primary" data-demo>프로젝트 둘러보기</button>
+          </div>
+          <div class="hero-visual" id="hero-visual" role="img" aria-label="메인 배너">
+            <span class="hero-emoji" id="hero-emoji">💚</span>
+            <div class="hero-dots" id="hero-dots" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shortcuts-section">
+      <div class="container">
+        <div class="shortcuts-grid">
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">🎂</div><span class="shortcut-label">생일카페</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">🚇</div><span class="shortcut-label">지하철광고</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">☕</div><span class="shortcut-label">커피차</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">🖼️</div><span class="shortcut-label">전시회</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">🥤</div><span class="shortcut-label">컵홀더</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">✨</div><span class="shortcut-label">응원봉</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">💿</div><span class="shortcut-label">앨범공구</span></div>
+          <div class="shortcut-item" data-demo><div class="shortcut-icon">📌</div><span class="shortcut-label">기타</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container main-content">
+      <div class="featured-area">
+        <h2 class="section-title">주목할 만한 프로젝트</h2>
+        <div class="project-grid" id="featured-grid">
+          <p class="loading">프로젝트를 불러오는 중...</p>
+        </div>
+      </div>
+      <aside class="popular-sidebar">
+        <h2 class="section-title">인기 프로젝트</h2>
+        <ol class="popular-list" id="popular-list">
+          <li class="loading">불러오는 중...</li>
+        </ol>
+      </aside>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
