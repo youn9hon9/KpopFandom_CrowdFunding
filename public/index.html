@@ -11,7 +11,8 @@
     <div class="header-inner">
       <a href="/" class="logo">Duckrowd</a>
       <div class="search-wrap">
-        <input type="search" class="search-input" placeholder="프로젝트, 아티스트, 총대 검색" aria-label="검색">
+        <input type="search" class="search-input" id="search-input" placeholder="프로젝트, 아티스트, 총대 검색" aria-label="검색" autocomplete="off">
+        <ul class="recent-search-list" id="recent-search-list" hidden></ul>
       </div>
       <div class="header-actions">
         <button type="button" class="btn btn-ghost" id="create-project-btn">프로젝트 올리기</button>
@@ -22,13 +23,13 @@
 
   <nav class="site-nav" aria-label="카테고리">
     <ul class="nav-list">
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>카테고리</a></li>
-      <li class="nav-item"><a href="/" class="nav-link active">홈</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>상시 판매</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>인기</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>신규</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>공개예정</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" data-demo>마감임박</a></li>
+      <li class="nav-item"><a href="#shortcuts-section" class="nav-link">아티스트</a></li>
+      <li class="nav-item"><a href="/" class="nav-link active" data-filter="featured">홈</a></li>
+      <li class="nav-item"><a href="/?filter=ongoing" class="nav-link" data-filter="ongoing">상시 판매</a></li>
+      <li class="nav-item"><a href="/?filter=popular" class="nav-link" data-filter="popular">인기</a></li>
+      <li class="nav-item"><a href="/?filter=new" class="nav-link" data-filter="new">신규</a></li>
+      <li class="nav-item"><a href="/?filter=upcoming" class="nav-link" data-filter="upcoming">공개예정</a></li>
+      <li class="nav-item"><a href="/?filter=closing" class="nav-link" data-filter="closing">마감임박</a></li>
     </ul>
   </nav>
 
@@ -39,7 +40,7 @@
           <div class="hero-text">
             <h1 id="hero-title">내 최애의 생일, 안전하고 투명하게 축하해요</h1>
             <p id="hero-subtitle">덕라우드와 함께하는 K-POP 팬 주최 이벤트 펀딩</p>
-            <button type="button" class="btn btn-primary" data-demo>프로젝트 둘러보기</button>
+            <button type="button" class="btn btn-primary" id="hero-browse-btn">프로젝트 둘러보기</button>
           </div>
           <div class="hero-visual" id="hero-visual" role="img" aria-label="메인 배너">
             <span class="hero-emoji" id="hero-emoji">💚</span>
@@ -49,26 +50,49 @@
       </div>
     </section>
 
-    <section class="shortcuts-section">
+    <section class="shortcuts-section" id="shortcuts-section">
       <div class="container">
-        <div class="shortcuts-grid">
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">🎂</div><span class="shortcut-label">생일카페</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">🚇</div><span class="shortcut-label">지하철광고</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">☕</div><span class="shortcut-label">커피차</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">🖼️</div><span class="shortcut-label">전시회</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">🥤</div><span class="shortcut-label">컵홀더</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">✨</div><span class="shortcut-label">응원봉</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">💿</div><span class="shortcut-label">앨범공구</span></div>
-          <div class="shortcut-item" data-demo><div class="shortcut-icon">📌</div><span class="shortcut-label">기타</span></div>
+        <div class="shortcuts-grid" id="artist-shortcuts">
+          <button type="button" class="shortcut-item" data-artist="에스파"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#a855f7,#ec4899)">æ</span><span class="shortcut-label">에스파</span></button>
+          <button type="button" class="shortcut-item" data-artist="아이브"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#f472b6,#fb7185)">IV</span><span class="shortcut-label">아이브</span></button>
+          <button type="button" class="shortcut-item" data-artist="BTS"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">BTS</span><span class="shortcut-label">BTS</span></button>
+          <button type="button" class="shortcut-item" data-artist="코르티스"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#14b8a6,#06b6d4)">C</span><span class="shortcut-label">코르티스</span></button>
+          <button type="button" class="shortcut-item" data-artist="빅뱅"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#1f2937,#4b5563)">BB</span><span class="shortcut-label">빅뱅</span></button>
+          <button type="button" class="shortcut-item" data-artist="한로로"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">한</span><span class="shortcut-label">한로로</span></button>
+          <button type="button" class="shortcut-item" data-artist="지코"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#00c471,#00a85e)">Z</span><span class="shortcut-label">지코</span></button>
+          <button type="button" class="shortcut-item" data-artist="비와이"><span class="shortcut-avatar" style="background:linear-gradient(135deg,#ef4444,#f97316)">BY</span><span class="shortcut-label">비와이</span></button>
         </div>
       </div>
     </section>
 
-    <section class="container main-content">
+    <section class="container main-content" id="projects-section">
       <div class="featured-area">
-        <h2 class="section-title">주목할 만한 프로젝트</h2>
+        <div class="projects-header">
+          <h2 class="section-title" id="projects-title">주목할 만한 프로젝트</h2>
+          <div class="projects-toolbar">
+            <p class="projects-meta" id="projects-meta"></p>
+            <label class="sort-control">
+              <span class="sort-label">정렬</span>
+              <select id="sort-select" class="form-input sort-select" aria-label="정렬 기준">
+                <option value="">기본 (필터별)</option>
+                <option value="newest">최신순</option>
+                <option value="oldest">오래된순</option>
+                <option value="title_asc">가나다순</option>
+                <option value="title_desc">가나다 역순</option>
+                <option value="popular">인기순</option>
+                <option value="closing">마감임박순</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="active-filters" id="active-filters" hidden></div>
         <div class="project-grid" id="featured-grid">
           <p class="loading">프로젝트를 불러오는 중...</p>
+        </div>
+        <div class="pagination-bar" id="pagination-bar" hidden>
+          <button type="button" class="btn btn-ghost btn-sm" id="pagination-prev">이전</button>
+          <span class="pagination-info" id="pagination-info"></span>
+          <button type="button" class="btn btn-primary btn-sm" id="pagination-more">더 보기</button>
         </div>
       </div>
       <aside class="popular-sidebar">
@@ -80,6 +104,10 @@
     </section>
   </main>
 
+  <script src="routes.js"></script>
+  <script src="errors.js"></script>
+  <script src="user-activity.js"></script>
+  <script src="favorites.js"></script>
   <script src="auth.js"></script>
   <script src="script.js"></script>
 </body>

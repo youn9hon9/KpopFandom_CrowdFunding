@@ -1,0 +1,14 @@
+{
+  "name": "env-guard",
+  "description": "Antigravity Agent Custom Skill: 로컬 포트 충돌 여부 및 .env의 중요 OAuth 필수 자격 증명 유효성을 파싱 및 검증합니다.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "port": {
+        "type": "integer",
+        "description": "점유를 확인할 로컬 포트 번호"
+      }
+    },
+    "required": []
+  }
+}

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Duckrowd | 팬들이 직접 만드는 K-POP 이벤트</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Noto+Sans+KR:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-primary-fixed": "#00210e",
+                "surface-bright": "#fcf9f8",
+                "surface-dim": "#dcd9d9",
+                "surface-container-high": "#eae7e7",
+                "on-tertiary-fixed-variant": "#00522b",
+                "secondary-container": "#fd761a",
+                "error": "#ba1a1a",
+                "outline-variant": "#bbcbbc",
+                "surface-container-low": "#f6f3f2",
+                "secondary-fixed": "#ffdbca",
+                "surface-variant": "#e5e2e1",
+                "secondary-fixed-dim": "#ffb690",
+                "surface-container": "#f0eded",
+                "on-error-container": "#93000a",
+                "surface-container-lowest": "#ffffff",
+                "inverse-on-surface": "#f3f0ef",
+                "on-surface": "#1c1b1b",
+                "surface": "#fcf9f8",
+                "surface-tint": "#006d3c",
+                "on-background": "#1c1b1b",
+                "on-secondary-fixed": "#341100",
+                "primary-fixed": "#63fea4",
+                "surface-container-highest": "#e5e2e1",
+                "secondary": "#9d4300",
+                "primary-fixed-dim": "#40e18a",
+                "primary": "#006d3c",
+                "on-tertiary-container": "#004a26",
+                "on-secondary-fixed-variant": "#783200",
+                "outline": "#6c7b6e",
+                "on-tertiary-fixed": "#00210e",
+                "error-container": "#ffdad6",
+                "primary-container": "#00c471",
+                "on-secondary-container": "#5c2400",
+                "background": "#fcf9f8",
+                "on-tertiary": "#ffffff",
+                "inverse-surface": "#313030",
+                "tertiary": "#006d3b",
+                "tertiary-fixed": "#78fca8",
+                "on-surface-variant": "#3c4a3f",
+                "tertiary-container": "#37c275",
+                "on-primary-fixed-variant": "#00522c",
+                "on-secondary": "#ffffff",
+                "on-primary-container": "#004a27",
+                "inverse-primary": "#40e18a",
+                "on-primary": "#ffffff",
+                "tertiary-fixed-dim": "#59df8e",
+                "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "unit_xl": "48px",
+                "max_width": "1200px",
+                "unit_lg": "24px",
+                "container_padding": "24px",
+                "header_height": "64px",
+                "unit_xs": "4px",
+                "unit_sm": "8px",
+                "unit_md": "16px",
+                "gutter": "20px"
+            },
+            "fontFamily": {
+                "body-md": ["Noto Sans KR"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "display-lg": ["Plus Jakarta Sans"],
+                "label-md": ["Noto Sans KR"],
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "body-lg": ["Noto Sans KR"],
+                "label-sm": ["Noto Sans KR"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .trust-bar-fill {
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #00c471 0%, #006d3c 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-container-high shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center h-header_height px-container_padding max-w-max_width mx-auto">
+<div class="flex items-center gap-unit_lg">
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary cursor-pointer">Duckrowd</span>
+<nav class="hidden md:flex gap-unit_md">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary text-label-md font-label-md py-1" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-inverse-surface hover:text-primary transition-colors text-label-md font-label-md py-1" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-inverse-surface hover:text-primary transition-colors text-label-md font-label-md py-1" href="#">My Walks</a>
+</nav>
+</div>
+<div class="flex items-center gap-unit_md flex-1 max-w-md mx-unit_lg">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-body-md" placeholder="Search projects, stars, or locations..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-unit_md">
+<button class="hidden md:block text-primary font-bold text-label-md hover:bg-surface-container-low px-unit_md py-unit_sm rounded-full transition-all">Start Project</button>
+<button class="text-on-surface-variant font-label-md hover:text-primary px-unit_md py-unit_sm">Login</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUkRysQwCbOvaYMBH9rEV8jl6AbGCISTSUj7pGA8h6kEIJtg_8UgFopcPlKcL9B_cA_fDkhUmKpq2qMUwMBjg310uh_4XedC8xdL7tYPKG37QCnLVp_31FuSyKUtfTSFEESN3vhgxAw0bT6GHVM_-7UTs9A2PgroxH-kqKwQAJkW_fAyMnnyLH8FGv3Fj0QRsd77q-lEryRpj43dWs5taQMZXML0hz8omNOzeurZxcQP1J-orqNq5qNrOx2QjFpkMUas-je3M8r1ls"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-max_width mx-auto px-container_padding pb-unit_xl">
+<!-- Hero Carousel Section -->
+<section class="mt-unit_md mb-unit_xl rounded-xl overflow-hidden relative h-[400px] flex items-center group">
+<div class="absolute inset-0 hero-gradient z-0">
+
+</div>
+<div class="relative z-10 px-unit_xl text-white max-w-2xl">
+<h1 class="font-display-lg text-display-lg mb-unit_md leading-tight">팬들이 직접 만드는<br/>K-POP 이벤트</h1>
+<p class="font-body-lg text-body-lg opacity-90 mb-unit_lg">좋아하는 아티스트를 위한 지하철 광고부터 생일 카페까지, 투명한 자금 관리와 전문적인 기획으로 팬들의 꿈을 현실로 만듭니다.</p>
+<div class="flex gap-unit_md">
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md px-unit_lg py-unit_md rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
+                        지금 참여하기 <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="glass-effect text-on-surface font-label-md text-label-md px-unit_lg py-unit_md rounded-full hover:bg-white transition-colors">
+                        Duckrowd 가이드
+                    </button>
+</div>
+</div>
+<div class="hidden lg:flex absolute right-unit_xl top-1/2 -translate-y-1/2 z-10 items-center justify-center">
+<div class="grid grid-cols-2 gap-unit_md">
+<div class="w-32 h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl transform -rotate-6">🎂</div>
+<div class="w-32 h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl transform rotate-12 translate-y-8">💿</div>
+<div class="w-32 h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl transform -rotate-12 translate-x-4">🚇</div>
+<div class="w-32 h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl transform rotate-6 translate-y-4">🚚</div>
+</div>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="mb-unit_xl">
+<h2 class="font-headline-md text-headline-md mb-unit_lg">카테고리별 탐색</h2>
+<div class="grid grid-cols-4 md:grid-cols-8 gap-gutter">
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🎂</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">생일 카페</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🚇</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">지하철 광고</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🚚</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">커피차</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🖼️</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">전시회</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🥤</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">컵홀더</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🔦</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">응원봉</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">💿</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">앨범 공구</span>
+</div>
+<div class="flex flex-col items-center gap-unit_sm group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-3xl group-hover:bg-primary-container transition-colors group-hover:scale-110 duration-300">🏷️</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary">기타</span>
+</div>
+</div>
+</section>
+<!-- Main Layout with Sidebar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-unit_xl">
+<!-- Project Grid -->
+<div class="lg:col-span-8">
+<div class="flex justify-between items-end mb-unit_lg">
+<h2 class="font-headline-md text-headline-md">실시간 인기 펀딩</h2>
+<a class="text-primary font-label-md text-label-md hover:underline" href="#">전체보기</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Project Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant K-pop concert venue filled with thousands of glowing lightsticks in a sea of emerald green, creating a powerful emotional atmosphere. The stage is dimly lit in the background with professional cinematic lighting focusing on the passionate crowd of fans. The overall aesthetic is energetic, high-fidelity, and captures the intense devotion of fandom culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDur8ZUL0JvkdbATYNuyjYDER2aS4YdVC8xpZ4xSy47l2b6R-sNtvqRe8vY39mDrLfbs5B_9_o2CTAf9tudg-eDWNF6V9oo8275gHI6GARh4HO8TB55p1LJSCcV68R9n-3w1eHPdb-KkMbVxm4gsvupMWxUqat7PiLopu25OPye-Z0_mVZs_5j1Q0_z5fKu8mjCREeYDYj-ijqPVt3CzV3qoDwS-ZRsi6uA8AHPIipvkiXEwWGYSj1GHNGKMvCU4EzDZq9QlivnPJ9S"/>
+<div class="absolute top-unit_md left-unit_md bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">진행중</div>
+</div>
+<div class="p-unit_md flex flex-col flex-1">
+<span class="text-on-surface-variant font-label-sm text-label-sm mb-1">NewJeans • 생일 카페</span>
+<h3 class="font-headline-md text-body-lg mb-unit_md line-clamp-2">민지 20주년 기념 코엑스 대형 미디어 월 광고</h3>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-unit_xs">
+<span class="text-primary font-bold text-headline-md">128%</span>
+<span class="text-on-surface-variant text-label-sm">12,800,000원</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-unit_sm">
+<div class="trust-bar-fill h-full bg-primary" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant text-label-sm">
+<span>245명 참여</span>
+<span>7일 남음</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A trendy, modern cafe interior decorated with hundreds of K-pop idol photographs and custom-designed cup holders arranged neatly on white wooden shelves. The lighting is soft and warm, highlighting the pastel aesthetic and the detailed fan-made merchandise. The scene is bright and professional, showcasing a high-end 'Birthday Cafe' event in Seoul with a clean and safe fintech-style clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLEcrCGekv73IOsVgOM01dxT_S5gi6s30b2QWKHaCgcHhA8GC2dUD5T3_ihrDlCnf0Moqr0AWMU6oiIXHgPEyq9fRsKQ_PywLTK_4tc3eWRsqdOoLqTs84KWUyMQHsUdGZtTzIUYIfMzqopUf0sdOaEmOMPFYBONKXaczNknm6vrj9OxXbIu8OTaweyM8kgV_6eF4-jtVs0EfIK90b95SRsmYPAsBhUhsPbZSkogNZagC0_2jMcAeYUx70XBmy0_RgaB23kE5EuMz1"/>
+<div class="absolute top-unit_md left-unit_md bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">진행중</div>
+</div>
+<div class="p-unit_md flex flex-col flex-1">
+<span class="text-on-surface-variant font-label-sm text-label-sm mb-1">IVE • 커피차</span>
+<h3 class="font-headline-md text-body-lg mb-unit_md line-clamp-2">레이 월드투어 피날레 응원 간식차 &amp; 서포트</h3>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-unit_xs">
+<span class="text-primary font-bold text-headline-md">85%</span>
+<span class="text-on-surface-variant text-label-sm">8,500,000원</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-unit_sm">
+<div class="trust-bar-fill h-full bg-primary" style="width: 85%"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant text-label-sm">
+<span>182명 참여</span>
+<span>12일 남음</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A large, high-resolution digital billboard in a busy metropolitan subway station displaying a high-fashion portrait of a famous male K-pop idol. People in modern attire walk past with a blurred motion effect, emphasizing the scale and public impact of the fan-funded advertisement. The lighting is crisp and urban, with reflections on the polished floor creating a sleek, contemporary fintech vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWx5wB9igWW2lbhKy0-4pnCEq6g015jXqHFWTm2FpTq9AFRtmBrVSQPcSxTqdPN5yHo9D2SfBPxW-1S32mAof3wcNHD2xBTSZ_KdK6vAa2BBtB3iqRJSqfkHpNVpisdrcaNpoKyK57k6h2ZGDIc9kBgfyYkpPAucgeP93TORwYE436wrZ_KiydA-rafX3tiePm0qgYcESm-4hvAN_tJVIvrf7Pou5cdWgXf2IXmJ7_ZDEjoH0Gf0nqTYXMQohJ1y_sdgkQj7Fhd7nt"/>
+<div class="absolute top-unit_md left-unit_md bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">진행중</div>
+</div>
+<div class="p-unit_md flex flex-col flex-1">
+<span class="text-on-surface-variant font-label-sm text-label-sm mb-1">SEVENTEEN • 지하철 광고</span>
+<h3 class="font-headline-md text-body-lg mb-unit_md line-clamp-2">호시 생일 축하 강남역 CM보드 패키지 광고</h3>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-unit_xs">
+<span class="text-primary font-bold text-headline-md">210%</span>
+<span class="text-on-surface-variant text-label-sm">4,200,000원</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-unit_sm">
+<div class="trust-bar-fill h-full bg-primary" style="width: 100%"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant text-label-sm">
+<span>312명 참여</span>
+<span>2일 남음</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A stack of newly released K-pop albums arranged artistically on a white table, surrounded by limited edition photocards and official merchandise. The image is shot in a clean, minimalist studio setting with bright, natural light. The aesthetic is professional and organized, representing a successful 'Group Buy' project with a focus on product quality and transparency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7njyKbnXDyFr085CF-I9E0s1UEtk6mimmu3XGVW8YnRndo11xuz9g-HoUn6CM8ADZjZcE7oCovoKgNw-yy1aQ7eL1fn-hPrF9Mk9UreZATG0f_jduD1bve1xhXkJCRk7hVBdKz2TUqYRoGEXJPjrDnadvdXsU0AkVr8GZfz8Yc0fnVtdtm9rMpFgUFOGHKBf3JB0X6yE3_PeAtOjvTUny3_Kq51HeH9bmGkxdBZE9T2FU7wBhoPJJioPzXTlr8ZTHc_O-HD_ykNGJ"/>
+<div class="absolute top-unit_md left-unit_md bg-tertiary-container text-white px-3 py-1 rounded-full text-label-sm font-label-sm">심사중</div>
+</div>
+<div class="p-unit_md flex flex-col flex-1">
+<span class="text-on-surface-variant font-label-sm text-label-sm mb-1">NCT DREAM • 앨범 공구</span>
+<h3 class="font-headline-md text-body-lg mb-unit_md line-clamp-2">정규 4집 발매 기념 팬 연합 글로벌 공동 구매</h3>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-unit_xs">
+<span class="text-on-surface-variant font-bold text-headline-md">예정</span>
+<span class="text-on-surface-variant text-label-sm">목표: 50,000,000원</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-unit_sm">
+<div class="trust-bar-fill h-full bg-surface-dim" style="width: 0%"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant text-label-sm">
+<span>1,240명 알림신청</span>
+<span>오픈 D-3</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar: Popular Rankings -->
+<aside class="lg:col-span-4">
+<div class="bg-surface-container-low rounded-xl p-unit_lg sticky top-[88px]">
+<div class="flex items-center justify-between mb-unit_lg">
+<h2 class="font-headline-md text-headline-md">실시간 랭킹</h2>
+<span class="text-label-sm text-on-surface-variant">14:00 기준</span>
+</div>
+<div class="space-y-unit_md">
+<!-- Ranking Item 1 -->
+<div class="flex items-center gap-unit_md group cursor-pointer">
+<span class="font-headline-md text-primary w-6 italic">1</span>
+<div class="w-14 h-14 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A small thumbnail profile of a K-pop idol portrait, styled with a soft focus and professional studio lighting against a clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn-7uMQUPkYtEug0hXOFLVIChBaKY8b4S6kFphii7dg-iyNZlcFiSTT_aKIvEJX3mYEUgR9OKGUVaI9JdkkcvfHjPMw73btoedUcIxxSeZ_tyl0qYHIBRLo7r_ujfXHAsKMDm-aGQhcuqRCGs_Aqw-0jTTHjBZJzaLI8SThH0m9qwuUujCFJHOc1UGK-thnzNQfL61FQo97dChKSuBqrECN66Qa0HrUGo9Rf1KT6WX-qYcx2FtxowP9gpjwMkOCmSLxxzGyBobNdv7"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-label-md text-on-surface truncate group-hover:text-primary transition-colors">BTS 지민 생일 광고</h4>
+<div class="flex items-center gap-2">
+<span class="text-primary text-label-sm font-bold">450% 달성</span>
+<span class="material-symbols-outlined text-label-sm text-error" style="font-variation-settings: 'FILL' 1;">change_history</span>
+</div>
+</div>
+</div>
+<!-- Ranking Item 2 -->
+<div class="flex items-center gap-unit_md group cursor-pointer">
+<span class="font-headline-md text-on-surface-variant w-6 italic">2</span>
+<div class="w-14 h-14 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Small thumbnail of a K-pop merchandise item like a lightstick or album cover, captured in a clean, bright product photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtexdlvsXwYRxBzSKflQkUOEVaTxWc0OHLo8BAfnAvf30Qh1-nPOjQGzih3uKgTEj1mZYLbQ25rdfIUOgojf2E9dWarCOD9O6tFDfjdK0yQqlWHo7wnm7NTXBG6G8zuQ3iaa4ZrFci-jBDpeSMPITRvomjAPjwJp6DUf3aOJjcUOeXvbns0Dgn1_9X9ZxDoCGyobnOUl79v6IHWbpdw1q9e8tKd15ALSjBlovJXymxg9M0txS3WxETStTXlXEnappk227h8K0b3gaf"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-label-md text-on-surface truncate group-hover:text-primary transition-colors">에스파 윈터 서포트</h4>
+<div class="flex items-center gap-2">
+<span class="text-primary text-label-sm font-bold">120% 달성</span>
+<span class="material-symbols-outlined text-label-sm text-error" style="font-variation-settings: 'FILL' 1;">change_history</span>
+</div>
+</div>
+</div>
+<!-- Ranking Item 3 -->
+<div class="flex items-center gap-unit_md group cursor-pointer">
+<span class="font-headline-md text-on-surface-variant w-6 italic">3</span>
+<div class="w-14 h-14 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Small thumbnail profile image of a trendy K-pop cafe event, featuring colorful decorations and fans gathering in a modern urban space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMaxDFG_UxmIZ-phHSy0TrlnQO6o-HtleuyLKlCzJkqLs8n5H_isb0lMZRreFv4pXxaNin5H12UY7L93Wj6u8me3Tq7q5NwYtJExOUWxU4ZEctrLQQ4Tc89BTJ_B1cdhGUeGqUwiOU-jZb0VjpCQziTrQrJqhtQ_6e7xHHPlaC4ZZK8hyWQvUoSxIBcftjvagJgE7vVVWCwiCqhWzEddc6y4qC7bm_5QTJj33uBxFJnK2q4ajSvhhko-lIMPWYoROD7G0DcaFpIZii"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-label-md text-on-surface truncate group-hover:text-primary transition-colors">Stray Kids 월드투어 버스</h4>
+<div class="flex items-center gap-2">
+<span class="text-primary text-label-sm font-bold">89% 달성</span>
+<span class="material-symbols-outlined text-label-sm text-primary" style="font-variation-settings: 'FILL' 1; transform: rotate(180deg);">change_history</span>
+</div>
+</div>
+</div>
+<hr class="border-outline-variant my-unit_md"/>
+<!-- Host Banner -->
+<div class="bg-primary-container/10 p-unit_md rounded-xl border border-primary/20">
+<div class="flex items-start gap-unit_sm mb-unit_sm">
+<span class="material-symbols-outlined text-primary">campaign</span>
+<p class="text-label-md font-bold text-primary">총대(Host)가 되어보세요!</p>
+</div>
+<p class="text-label-sm text-on-surface-variant mb-unit_md">당신의 아티스트를 위해 특별한 이벤트를 기획하고 싶으신가요? 덕라우드가 안전한 정산과 기획을 돕습니다.</p>
+<button class="w-full py-2 bg-primary text-white rounded-full text-label-md font-bold hover:bg-on-primary-fixed-variant transition-colors">프로젝트 개설하기</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-dim full-width border-t border-outline-variant dark:border-outline">
+<div class="w-full py-unit_xl px-container_padding max-w-max_width mx-auto flex flex-col md:flex-row justify-between">
+<div class="mb-unit_lg md:mb-0">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface">Duckrowd</span>
+<p class="mt-unit_sm text-body-md text-on-surface-variant dark:text-surface-variant max-w-xs">
+                    팬들이 안심하고 아티스트를 지원할 수 있는 <br/>투명한 크라우드펀딩 플랫폼입니다.
+                </p>
+<p class="mt-unit_lg text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant">© 2024 Duckrowd. Transparently Enthusiastic.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-unit_xl">
+<div class="flex flex-col gap-unit_sm">
+<span class="text-label-md font-bold text-on-surface mb-2">Platform Info</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">회사 소개</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">이용 안내</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">공지사항</a>
+</div>
+<div class="flex flex-col gap-unit_sm">
+<span class="text-label-md font-bold text-on-surface mb-2">Terms of Service</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">이용약관</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">환불 정책</a>
+</div>
+<div class="flex flex-col gap-unit_sm">
+<span class="text-label-md font-bold text-on-surface mb-2">Social Links</span>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- FAB for mobile -->
+<div class="fixed bottom-unit_lg right-unit_lg md:hidden z-40">
+<button class="w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<script>
+        // Micro-interactions and simple effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate trust bars on scroll
+            const bars = document.querySelectorAll('.trust-bar-fill');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetWidth = entry.target.style.width;
+                        entry.target.style.width = '0%';
+                        setTimeout(() => {
+                            entry.target.style.width = targetWidth;
+                        }, 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            bars.forEach(bar => observer.observe(bar));
+        });
+    </script>
+</body></html>

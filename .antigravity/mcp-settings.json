@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "sqlite-explorer": {
+      "command": "node",
+      "args": [
+        "c:/Workspace/KpopFandom_CrowdFunding/.antigravity/mcp/sqlite-mcp-server.js"
+      ],
+      "env": {
+        "DB_PATH": "c:/Workspace/KpopFandom_CrowdFunding/data/duckrowd.db",
+        "JOURNAL_MODE": "WAL"
+      },
+      "enabled": true
+    },
+    "figma-explorer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-figma"
+      ],
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "YOUR_FIGMA_PAT_TOKEN"
+      },
+      "enabled": false
+    },
+    "oauth-debugger": {
+      "command": "node",
+      "args": [
+        "c:/Workspace/KpopFandom_CrowdFunding/.antigravity/mcp/oauth-mcp-server.js"
+      ],
+      "env": {
+        "REDIRECT_URI_BASE": "http://localhost:3000"
+      },
+      "enabled": true
+    }
+  }
+}

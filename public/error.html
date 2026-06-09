@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오류 — Duckrowd</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="error-page-body">
+  <main class="error-page">
+    <div class="error-page-card">
+      <p class="error-page-code" id="error-code">404</p>
+      <h1 class="error-page-title" id="error-title">페이지를 찾을 수 없습니다</h1>
+      <p class="error-page-desc" id="error-desc">
+        요청하신 주소가 변경되었거나 삭제되었을 수 있습니다.
+      </p>
+      <p class="error-page-detail" id="error-detail" hidden></p>
+      <div class="error-page-actions">
+        <a href="/" class="btn btn-primary">홈으로 돌아가기</a>
+        <button type="button" class="btn btn-ghost" id="error-retry-btn" hidden>다시 시도</button>
+        <a href="/?login=1" class="btn btn-ghost" id="error-login-btn" hidden>로그인하기</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    const ERROR_CONTENT = {
+      401: {
+        title: '로그인이 필요합니다',
+        desc: '이 기능을 이용하려면 Google 또는 Kakao 계정으로 로그인해 주세요.',
+        showLogin: true
+      },
+      403: {
+        title: '접근할 수 없습니다',
+        desc: '해당 페이지나 기능에 대한 권한이 없습니다.'
+      },
+      404: {
+        title: '페이지를 찾을 수 없습니다',
+        desc: '요청하신 주소가 변경되었거나 삭제되었을 수 있습니다.'
+      },
+      500: {
+        title: '서버 오류가 발생했습니다',
+        desc: '일시적인 문제일 수 있습니다. 잠시 후 다시 시도해 주세요.',
+        showRetry: true
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code') || '404';
+    const message = params.get('message');
+    const from = params.get('from');
+    const content = ERROR_CONTENT[code] || ERROR_CONTENT['404'];
+
+    document.title = `${code} — Duckrowd`;
+    document.getElementById('error-code').textContent = code;
+    document.getElementById('error-title').textContent = content.title;
+    document.getElementById('error-desc').textContent = content.desc;
+
+    const detailEl = document.getElementById('error-detail');
+    const details = [message, from ? `요청 경로: ${decodeURIComponent(from)}` : null].filter(Boolean);
+    if (details.length) {
+      detailEl.textContent = details.join(' · ');
+      detailEl.hidden = false;
+    }
+
+    if (content.showRetry) {
+      const retryBtn = document.getElementById('error-retry-btn');
+      retryBtn.hidden = false;
+      retryBtn.addEventListener('click', () => {
+        if (from) window.location.href = decodeURIComponent(from);
+        else window.location.reload();
+      });
+    }
+
+    if (content.showLogin) {
+      document.getElementById('error-login-btn').hidden = false;
+    }
+  </script>
+</body>
+</html>

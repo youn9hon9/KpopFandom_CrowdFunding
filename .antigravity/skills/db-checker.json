@@ -1,0 +1,14 @@
+{
+  "name": "db-checker",
+  "description": "Antigravity Agent Custom Skill: SQLite 데이터베이스의 WAL 저널링 모드 설정 여부 및 핵심 테이블 정합성을 점검합니다.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "dbPath": {
+        "type": "string",
+        "description": "검사할 SQLite db 파일 절대 경로"
+      }
+    },
+    "required": ["dbPath"]
+  }
+}

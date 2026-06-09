@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth 설정 필요 — Duckrowd</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .setup-body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 24px;
+    }
+    .setup-card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 40px 32px;
+    }
+    .setup-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .setup-subtitle {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .setup-steps {
+      background: var(--color-surface);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .setup-steps ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .setup-steps code {
+      background: rgba(0, 0, 0, 0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    .setup-back {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--color-primary);
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body class="setup-body">
+  <div class="setup-card">
+    <h1 class="setup-title" id="setup-title">OAuth 설정이 필요합니다</h1>
+    <p class="setup-subtitle" id="setup-subtitle">
+      실제 소셜 로그인을 사용하려면 `.env` 파일에 OAuth 자격 증명을 등록해야 합니다.
+      Mock 시뮬레이터는 제거되었습니다.
+    </p>
+    <div class="setup-steps">
+      <ol id="setup-steps">
+        <li>프로젝트 루트에서 <code>.env.example</code>을 복사해 <code>.env</code> 생성</li>
+        <li><code>REDIRECT_URI_BASE</code>를 접속 URL과 동일하게 설정 (예: <code>http://localhost:3000</code>)</li>
+        <li>Google Cloud Console / Kakao Developers에서 OAuth 클라이언트 생성</li>
+        <li>리다이렉트 URI 등록: <code>/auth/google/callback</code>, <code>/auth/kakao/callback</code></li>
+        <li>서버 재시작 후 다시 로그인</li>
+      </ol>
+    </div>
+    <a href="/" class="setup-back">← 메인으로 돌아가기</a>
+  </div>
+  <script>
+    const provider = new URLSearchParams(window.location.search).get('provider') || 'all';
+    const title = document.getElementById('setup-title');
+    const subtitle = document.getElementById('setup-subtitle');
+
+    if (provider === 'google') {
+      title.textContent = 'Google OAuth 설정이 필요합니다';
+      subtitle.textContent = 'GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI_BASE를 .env에 설정해 주세요.';
+    } else if (provider === 'kakao') {
+      title.textContent = 'Kakao OAuth 설정이 필요합니다';
+      subtitle.textContent = 'KAKAO_CLIENT_ID(REST API 키), REDIRECT_URI_BASE를 .env에 설정해 주세요.';
+    }
+  </script>
+</body>
+</html>

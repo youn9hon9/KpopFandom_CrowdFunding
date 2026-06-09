@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>프로젝트 상세 — Duckrowd</title>
+  <title>마이페이지 — Duckrowd</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="logo">Duckrowd</a>
-      <div class="search-wrap">
-        <input type="search" class="search-input" id="detail-search-input" placeholder="프로젝트, 아티스트, 총대 검색" aria-label="검색">
-      </div>
       <div class="header-actions">
         <button type="button" class="btn btn-ghost" id="create-project-btn">프로젝트 올리기</button>
         <button type="button" class="btn btn-primary" id="login-nav-btn">로그인/회원가입</button>
@@ -20,19 +17,17 @@
     </div>
   </header>
 
-  <main class="detail-page">
-    <div class="container" id="detail-root">
-      <p class="loading">프로젝트를 불러오는 중...</p>
+  <main class="mypage-page container">
+    <a href="/" class="detail-back">← 홈으로</a>
+    <div id="mypage-root">
+      <p class="loading">마이페이지를 불러오는 중...</p>
     </div>
   </main>
 
   <script src="/routes.js"></script>
   <script src="/errors.js"></script>
   <script src="/user-activity.js"></script>
-  <script src="/favorites.js"></script>
-  <script src="/maps.js"></script>
   <script src="/auth.js"></script>
-  <script src="/community.js"></script>
-  <script src="/detail.js"></script>
+  <script src="/mypage.js"></script>
 </body>
 </html>

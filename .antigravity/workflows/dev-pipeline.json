@@ -1,0 +1,44 @@
+{
+  "workflow": {
+    "name": "Duckrowd Agent Development Pipeline",
+    "version": "1.0",
+    "description": "Antigravity Agent가 소스코드를 수정 및 빌드할 때 순차적으로 진행하는 자율 자동화 파이프라인 흐름 정의입니다.",
+    "triggers": {
+      "on_code_change": true,
+      "on_manual_execution": true
+    },
+    "stages": [
+      {
+        "id": "env-validation",
+        "name": "Environment & Port Verification",
+        "action": "execute_skill",
+        "skill": "env-guard",
+        "args": [],
+        "fail_on_error": true
+      },
+      {
+        "id": "db-schema-check",
+        "name": "Database WAL & Table Integrity Check",
+        "action": "execute_skill",
+        "skill": "db-checker",
+        "args": [],
+        "fail_on_error": true
+      },
+      {
+        "id": "coding-principles",
+        "name": "Evaluate Behavioral Rules",
+        "action": "read_rules",
+        "rules_file": ".antigravity/rules.md",
+        "fail_on_error": true
+      },
+      {
+        "id": "css-linter-check",
+        "name": "Aesthetic CSS Token Linter",
+        "action": "execute_skill",
+        "skill": "css-linter",
+        "args": [],
+        "fail_on_error": false
+      }
+    ]
+  }
+}

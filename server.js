@@ -1,262 +1,28 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
+const oauth = require('./lib/oauth');
+const roles = require('./lib/roles');
+const db = require('./lib/database');
+const community = require('./lib/community');
+const { registerCommunityRoutes } = require('./lib/communityRoutes');
+const { registerAdminRoutes } = require('./lib/adminRoutes');
+const adminLib = require('./lib/admin');
+const projectList = require('./lib/projectList');
+const validate = require('./lib/validate');
+const kakaoMap = require('./lib/kakaoMap');
+const { projectCoverUpload } = require('./lib/upload');
+const csvExport = require('./lib/csvExport');
+const activity = require('./lib/activity');
+const { registerActivityRoutes } = require('./lib/activityRoutes');
+const { registerFavoritesRoutes } = require('./lib/favoritesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const projects = [
-  {
-    id: 1,
-    title: '서울 강남역 2호선 생일 카페 — 하루 종일 팬 이벤트',
-    category: '생일카페',
-    hostName: '별빛총대',
-    trustTemperature: 91,
-    successCount: 12,
-    status: '펀딩 진행 중',
-    goalAmount: 8000000,
-    currentAmount: 6240000,
-    percentFunded: 78,
-    daysLeft: 9,
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    emoji: '🎂',
-    featured: true,
-    popularRank: 1,
-    story: `<p>최애의 생일을 맞아 강남역 인근 카페 전층을 팬 이벤트 공간으로 꾸밉니다.</p>
-<p>포토존, 포토카드 교환 데스크, 생일 케이크 커팅 타임까지 준비했습니다. 모든 정산은 덕라우드 에스크로를 통해 투명하게 진행됩니다.</p>
-<p>목표 달성 시 추가 굿즈(컵홀더 세트)가 후원자 전원에게 제공됩니다.</p>`,
-    community: {
-      notices: [
-        { date: '2026-05-20', title: '카페 예약 확정 안내', body: '5/28~5/30 3일간 예약이 완료되었습니다.' },
-        { date: '2026-05-15', title: '굿즈 시안 공개', body: '컵홀더 디자인 투표 결과를 반영했습니다.' }
-      ],
-      polls: [
-        {
-          id: 'poll-1',
-          question: '생일 케이크 디자인은 어떤 스타일이 좋을까요?',
-          options: [
-            { label: '클래식 화이트', votes: 142 },
-            { label: '포인트 컬러 그라데이션', votes: 218 },
-            { label: '미니 캐릭터 피규어', votes: 95 }
-          ]
-        }
-      ]
-    },
-    refundPolicy: '목표 금액 미달성 시 전액 자동 환불됩니다. 펀딩 종료 후 7영업일 이내 결제 수단으로 환불 처리됩니다. 무산 확정 시에도 동일 정책이 적용됩니다.'
-  },
-  {
-    id: 2,
-    title: '홍대입구역 커피차 — 500잔 응원 이벤트',
-    category: '커피차',
-    hostName: '달빛응원단',
-    trustTemperature: 88,
-    successCount: 8,
-    status: '펀딩 진행 중',
-    goalAmount: 5500000,
-    currentAmount: 4950000,
-    percentFunded: 90,
-    daysLeft: 4,
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    emoji: '☕',
-    featured: true,
-    popularRank: 2,
-    story: `<p>컴백 주간 홍대입구역 앞에서 아티스트와 스태프를 위한 커피차를 운영합니다.</p>
-<p>음료 500잔 + 간식 세트, 스태프용 에너지 드링크를 포함한 패키지입니다.</p>`,
-    community: {
-      notices: [
-        { date: '2026-05-22', title: '커피차 업체 계약 완료', body: '메뉴 구성은 투표 결과를 반영합니다.' }
-      ],
-      polls: [
-        {
-          id: 'poll-1',
-          question: '대표 음료 메뉴를 골라주세요',
-          options: [
-            { label: '아메리카노', votes: 89 },
-            { label: '라떼', votes: 201 },
-            { label: '에이드', votes: 156 }
-          ]
-        }
-      ]
-    },
-    refundPolicy: '이벤트 취소 시 전액 환불. 부분 진행 불가 시 남은 금액 비례 환불 후 안내드립니다.'
-  },
-  {
-    id: 3,
-    title: '신사역 7호선 지하철 스크린도어 광고',
-    category: '지하철광고',
-    hostName: '역사팬클럽',
-    trustTemperature: 85,
-    successCount: 5,
-    status: '펀딩 진행 중',
-    goalAmount: 12000000,
-    currentAmount: 7200000,
-    percentFunded: 60,
-    daysLeft: 18,
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    emoji: '🚇',
-    featured: true,
-    popularRank: 3,
-    story: `<p>생일 주간 신사역 스크린도어에 축하 영상·이미지를 2주간 게재합니다.</p>
-<p>디자인 시안은 커뮤니티 투표로 확정됩니다.</p>`,
-    community: {
-      notices: [
-        { date: '2026-05-10', title: '광고 심의 서류 제출', body: '심의 통과 후 일정이 확정됩니다.' }
-      ],
-      polls: []
-    },
-    refundPolicy: '광고 심의 불통과 시 전액 환불. 통과 후 일정 변경은 호스트 공지 후 협의합니다.'
-  },
-  {
-    id: 4,
-    title: '앨범 공동구매 + 응원 포스터 세트',
-    category: '앨범공구',
-    hostName: '앨범마스터',
-    trustTemperature: 79,
-    successCount: 15,
-    status: '펀딩 진행 중',
-    goalAmount: 3200000,
-    currentAmount: 2560000,
-    percentFunded: 80,
-    daysLeft: 12,
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    emoji: '💿',
-    featured: true,
-    popularRank: 4,
-    story: `<p>신규 미니앨범 공구 및 응원 포스터 번들 패키지입니다.</p>`,
-    community: {
-      notices: [{ date: '2026-05-18', title: '발주 수량 집계 중', body: '마감 D-12 기준 80% 달성' }],
-      polls: []
-    },
-    refundPolicy: '발주 전 취소 시 전액 환불. 발주 후에는 제작 특성상 환불이 제한될 수 있습니다.'
-  },
-  {
-    id: 5,
-    title: '전국 카페 컵홀더 콜라보 — 50개 매장',
-    category: '컵홀더',
-    hostName: '컵홀더연합',
-    trustTemperature: 82,
-    successCount: 6,
-    status: '펀딩 진행 중',
-    goalAmount: 4500000,
-    currentAmount: 3150000,
-    percentFunded: 70,
-    daysLeft: 15,
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    emoji: '🥤',
-    featured: true,
-    popularRank: 5,
-    story: `<p>전국 50개 제휴 카페에서 한정 컵홀더를 배포합니다.</p>`,
-    community: { notices: [], polls: [] },
-    refundPolicy: '목표 미달성 시 전액 자동 환불.'
-  },
-  {
-    id: 6,
-    title: '올림픽공원 응원봉 커스텀 컬러 펀딩',
-    category: '응원봉',
-    hostName: '빛나는총대',
-    trustTemperature: 76,
-    successCount: 4,
-    status: '심사 중',
-    goalAmount: 6000000,
-    currentAmount: 0,
-    percentFunded: 0,
-    daysLeft: 30,
-    gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-    emoji: '✨',
-    featured: true,
-    popularRank: null,
-    story: `<p>공식 응원봉 커스텀 컬러 제작 건입니다. 현재 플랫폼 심사 중이며 승인 후 펀딩이 시작됩니다.</p>`,
-    community: {
-      notices: [{ date: '2026-05-25', title: '심사 진행 안내', body: '예상 3~5일 소요' }],
-      polls: []
-    },
-    refundPolicy: '심사 단계에서는 결제가 진행되지 않습니다. 펀딩 시작 후 미달성 시 전액 환불.'
-  },
-  {
-    id: 7,
-    title: '성수동 팝업 전시회 — 팬아트 & 굿즈',
-    category: '전시회',
-    hostName: '아트덕후',
-    trustTemperature: 73,
-    successCount: 3,
-    status: '펀딩 진행 중',
-    goalAmount: 7000000,
-    currentAmount: 4550000,
-    percentFunded: 65,
-    daysLeft: 21,
-    gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-    emoji: '🖼️',
-    featured: true,
-    popularRank: null,
-    story: `<p>팬아트 전시 및 한정 굿즈 판매 공간을 2주간 운영합니다.</p>`,
-    community: { notices: [], polls: [] },
-    refundPolicy: '전시 취소 시 전액 환불.'
-  },
-  {
-    id: 8,
-    title: '부산 서면 생일 광고 빌보드',
-    category: '지하철광고',
-    hostName: '부산팬연합',
-    trustTemperature: 68,
-    successCount: 2,
-    status: '펀딩 진행 중',
-    goalAmount: 9000000,
-    currentAmount: 2700000,
-    percentFunded: 30,
-    daysLeft: 25,
-    gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-    emoji: '📢',
-    featured: true,
-    popularRank: null,
-    story: `<p>서면 역 일대 옥외 빌보드 생일 축하 광고입니다.</p>`,
-    community: { notices: [], polls: [] },
-    refundPolicy: '목표 미달성 시 전액 환불.'
-  },
-  {
-    id: 9,
-    title: '대구 동성로 커피차 — 야간 응원',
-    category: '커피차',
-    hostName: '대구덕친구',
-    trustTemperature: 58,
-    successCount: 1,
-    status: '무산/자동 환불 예정',
-    goalAmount: 4000000,
-    currentAmount: 1200000,
-    percentFunded: 30,
-    daysLeft: 2,
-    gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-    emoji: '🌙',
-    featured: true,
-    popularRank: null,
-    story: `<p>목표 달성이 어려워 무산 처리 예정입니다. 결제하신 분들께는 자동 환불이 진행됩니다.</p>`,
-    community: {
-      notices: [{ date: '2026-05-26', title: '무산 안내', body: 'D-2 기준 30% 달성으로 무산 절차가 시작됩니다.' }],
-      polls: []
-    },
-    refundPolicy: '무산 확정 시 100% 자동 환불. 환불은 3~5영업일 내 완료됩니다. 별도 신청 없이 처리됩니다.'
-  },
-  {
-    id: 10,
-    title: '기타 — 팬미팅 환영 플래카드 100장 제작',
-    category: '기타',
-    hostName: '신입총대',
-    trustTemperature: 42,
-    successCount: 0,
-    status: '심사 중',
-    goalAmount: 1500000,
-    currentAmount: 0,
-    percentFunded: 0,
-    daysLeft: 45,
-    gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)',
-    emoji: '🏳️',
-    featured: false,
-    popularRank: null,
-    story: `<p>첫 프로젝트로 플래카드 제작 펀딩을 준비 중입니다.</p>`,
-    community: { notices: [], polls: [] },
-    refundPolicy: '심사 통과 후 펀딩 오픈. 미달성 시 전액 환불.'
-  }
-];
+db.initDatabase();
+db.scheduleCommunityBackfill(db);
 
 const heroSlides = [
   {
@@ -267,7 +33,7 @@ const heroSlides = [
   },
   {
     title: '총대의 덕질 온도로 신뢰를 확인하세요',
-    subtitle: '성공 이력 기반 매너온도 · 안전 에스크로 결제',
+    subtitle: '성공 이력 기반 매너온도 · 안전 결제',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     emoji: '🌡️'
   },
@@ -280,341 +46,196 @@ const heroSlides = [
 ];
 
 app.use(express.json());
+app.use(cookieParser());
 
-// Simple Cookie Parser Middleware
-app.use((req, res, next) => {
-  const cookies = {};
-  if (req.headers.cookie) {
-    req.headers.cookie.split(';').forEach(cookie => {
-      const parts = cookie.split('=');
-      cookies[parts[0].trim()] = parts.slice(1).join('=').trim();
-    });
-  }
-  req.cookies = cookies;
-  next();
-});
-
-// Session store (in-memory)
-const sessions = {}; // sessionId -> user profile
-
-// Session check middleware
 app.use((req, res, next) => {
   const sessionId = req.cookies.session_id;
-  if (sessionId && sessions[sessionId]) {
-    req.user = sessions[sessionId];
+  const stored = db.sessionStore.get(sessionId);
+  if (stored) {
+    const prevAdminMode = stored.adminMode;
+    req.user = roles.assignRole(stored);
+    if (req.user.role === 'admin' && prevAdminMode === false) {
+      req.user.adminMode = false;
+    }
   } else {
     req.user = null;
   }
   next();
 });
 
-// Helper to determine if a provider is configured with real credentials
-function isConfigured(provider) {
-  const baseUri = process.env.REDIRECT_URI_BASE;
-  if (!baseUri || baseUri.includes('your_')) return false;
-
-  if (provider === 'google') {
-    const cid = process.env.GOOGLE_CLIENT_ID;
-    const csec = process.env.GOOGLE_CLIENT_SECRET;
-    return cid && csec && !cid.startsWith('your_') && !csec.startsWith('your_');
+app.get('/auth/google', async (req, res) => {
+  if (!oauth.isGoogleConfigured()) {
+    return res.redirect('/oauth-setup.html?provider=google');
   }
-  if (provider === 'kakao') {
-    const cid = process.env.KAKAO_CLIENT_ID;
-    return cid && !cid.startsWith('your_');
-  }
-  return false;
-}
 
-// Google OAuth Authorization
-app.get('/auth/google', (req, res) => {
-  const redirectBase = process.env.REDIRECT_URI_BASE || `http://localhost:${PORT}`;
-  const redirectUri = `${redirectBase}/auth/google/callback`;
-
-  if (isConfigured('google')) {
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
-      `client_id=${encodeURIComponent(process.env.GOOGLE_CLIENT_ID)}` +
-      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-      `&response_type=code` +
-      `&scope=openid%20profile%20email`;
-    res.redirect(googleAuthUrl);
-  } else {
-    res.redirect(`/mock-login.html?provider=google&redirect_uri=${encodeURIComponent(redirectUri)}`);
+  try {
+    const authUrl = await oauth.buildGoogleAuthRedirect();
+    res.redirect(authUrl);
+  } catch (error) {
+    console.error('Google OAuth Start Error:', error);
+    res.redirect('/?error=google_auth_start_failed');
   }
 });
 
-// Google OAuth Callback
 app.get('/auth/google/callback', async (req, res) => {
-  const { code, mock, name, email, avatar } = req.query;
-  const redirectBase = process.env.REDIRECT_URI_BASE || `http://localhost:${PORT}`;
-  const redirectUri = `${redirectBase}/auth/google/callback`;
-
-  let userProfile = null;
-
-  if (mock === 'true' || !isConfigured('google')) {
-    userProfile = {
-      id: 'mock-google-' + Date.now(),
-      name: name || '홍길동 (Google Mock)',
-      email: email || 'mock-google@example.com',
-      avatar: avatar || '',
-      provider: 'google'
-    };
-  } else if (code) {
-    try {
-      const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          code,
-          client_id: process.env.GOOGLE_CLIENT_ID,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET,
-          redirect_uri: redirectUri,
-          grant_type: 'authorization_code'
-        })
-      });
-
-      if (!tokenResponse.ok) {
-        throw new Error('Failed to exchange Google OAuth code');
-      }
-
-      const tokenData = await tokenResponse.json();
-      const accessToken = tokenData.access_token;
-
-      const userResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-
-      if (!userResponse.ok) {
-        throw new Error('Failed to fetch Google user profile');
-      }
-
-      const userData = await userResponse.json();
-      userProfile = {
-        id: userData.sub,
-        name: userData.name || userData.given_name || userData.email.split('@')[0],
-        email: userData.email,
-        avatar: userData.picture || '',
-        provider: 'google'
-      };
-    } catch (error) {
-      console.error('Google OAuth Callback Error:', error);
-      return res.status(500).send(`로그인 오류가 발생했습니다: ${error.message}`);
-    }
+  if (!oauth.isGoogleConfigured()) {
+    return res.redirect('/oauth-setup.html?provider=google');
   }
 
-  if (userProfile) {
-    const sessionId = crypto.randomBytes(16).toString('hex');
-    sessions[sessionId] = userProfile;
-    res.setHeader('Set-Cookie', `session_id=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400`);
+  try {
+    const userProfile = await oauth.handleGoogleCallback(req);
+    oauth.createSession(res, db.sessionStore, roles.assignRole(userProfile));
     res.redirect('/');
-  } else {
-    res.redirect('/?error=google_auth_failed');
+  } catch (error) {
+    console.error('Google OAuth Callback Error:', error);
+    res.redirect(`/?error=google_auth_failed&msg=${encodeURIComponent(error.message)}`);
   }
 });
 
-// Kakao OAuth Authorization
 app.get('/auth/kakao', (req, res) => {
-  const redirectBase = process.env.REDIRECT_URI_BASE || `http://localhost:${PORT}`;
-  const redirectUri = `${redirectBase}/auth/kakao/callback`;
+  if (!oauth.isKakaoConfigured()) {
+    return res.redirect('/oauth-setup.html?provider=kakao');
+  }
 
-  if (isConfigured('kakao')) {
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?` +
-      `client_id=${encodeURIComponent(process.env.KAKAO_CLIENT_ID)}` +
-      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-      `&response_type=code`;
-    res.redirect(kakaoAuthUrl);
-  } else {
-    res.redirect(`/mock-login.html?provider=kakao&redirect_uri=${encodeURIComponent(redirectUri)}`);
+  try {
+    const authUrl = oauth.buildKakaoAuthRedirect();
+    res.redirect(authUrl);
+  } catch (error) {
+    console.error('Kakao OAuth Start Error:', error);
+    res.redirect('/?error=kakao_auth_start_failed');
   }
 });
 
-// Kakao OAuth Callback
 app.get('/auth/kakao/callback', async (req, res) => {
-  const { code, mock, name, email, avatar } = req.query;
-  const redirectBase = process.env.REDIRECT_URI_BASE || `http://localhost:${PORT}`;
-  const redirectUri = `${redirectBase}/auth/kakao/callback`;
-
-  let userProfile = null;
-
-  if (mock === 'true' || !isConfigured('kakao')) {
-    userProfile = {
-      id: 'mock-kakao-' + Date.now(),
-      name: name || '이몽룡 (Kakao Mock)',
-      email: email || 'mock-kakao@example.com',
-      avatar: avatar || '',
-      provider: 'kakao'
-    };
-  } else if (code) {
-    try {
-      const bodyParams = {
-        grant_type: 'authorization_code',
-        client_id: process.env.KAKAO_CLIENT_ID,
-        redirect_uri: redirectUri,
-        code
-      };
-      if (process.env.KAKAO_CLIENT_SECRET && !process.env.KAKAO_CLIENT_SECRET.startsWith('your_')) {
-        bodyParams.client_secret = process.env.KAKAO_CLIENT_SECRET;
-      }
-
-      const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
-        body: new URLSearchParams(bodyParams)
-      });
-
-      if (!tokenResponse.ok) {
-        const errorText = await tokenResponse.text();
-        throw new Error(`Failed to exchange Kakao OAuth token: ${errorText}`);
-      }
-
-      const tokenData = await tokenResponse.json();
-      const accessToken = tokenData.access_token;
-
-      const userResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
-        headers: { 
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        }
-      });
-
-      if (!userResponse.ok) {
-        throw new Error('Failed to fetch Kakao user profile');
-      }
-
-      const userData = await userResponse.json();
-      const kakaoAccount = userData.kakao_account || {};
-      const properties = userData.properties || {};
-
-      userProfile = {
-        id: String(userData.id),
-        name: properties.nickname || kakaoAccount.profile?.nickname || 'Kakao User',
-        email: kakaoAccount.email || `${userData.id}@kakao.com`,
-        avatar: properties.thumbnail_image || kakaoAccount.profile?.thumbnail_image_url || '',
-        provider: 'kakao'
-      };
-    } catch (error) {
-      console.error('Kakao OAuth Callback Error:', error);
-      return res.status(500).send(`로그인 오류가 발생했습니다: ${error.message}`);
-    }
+  if (!oauth.isKakaoConfigured()) {
+    return res.redirect('/oauth-setup.html?provider=kakao');
   }
 
-  if (userProfile) {
-    const sessionId = crypto.randomBytes(16).toString('hex');
-    sessions[sessionId] = userProfile;
-    res.setHeader('Set-Cookie', `session_id=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400`);
+  try {
+    const userProfile = await oauth.handleKakaoCallback(req);
+    oauth.createSession(res, db.sessionStore, roles.assignRole(userProfile));
     res.redirect('/');
-  } else {
-    res.redirect('/?error=kakao_auth_failed');
+  } catch (error) {
+    console.error('Kakao OAuth Callback Error:', error);
+    res.redirect(`/?error=kakao_auth_failed&msg=${encodeURIComponent(error.message)}`);
   }
 });
 
-// Authentication Status API
 app.get('/api/auth/me', (req, res) => {
   if (req.user) {
-    res.json({ loggedIn: true, user: req.user });
+    res.json({ loggedIn: true, user: roles.toAuthUser(req.user) });
   } else {
     res.json({ loggedIn: false });
   }
 });
 
-// Logout API
 app.post('/api/auth/logout', (req, res) => {
   const sessionId = req.cookies.session_id;
   if (sessionId) {
-    delete sessions[sessionId];
+    db.sessionStore.delete(sessionId);
   }
   res.setHeader('Set-Cookie', 'session_id=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
   res.json({ success: true });
 });
 
-// Donations store (in-memory)
-const donations = []; // { id, userId, projectId, amount, paymentMethod, status, createdAt }
-
-// 1. POST /api/projects/:id/sponsor
 app.post('/api/projects/:id/sponsor', (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ error: '로그인이 필요합니다.' });
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
   }
 
   const projectId = parseInt(req.params.id, 10);
-  const project = projects.find((p) => p.id === projectId);
+  const project = db.getProjectById(projectId);
   if (!project) {
-    return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.' });
+    return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.', code: 'PROJECT_NOT_FOUND' });
+  }
+
+  if (project.status === '심사 중' || project.status === '심사 거절') {
+    return res.status(400).json({
+      error: '심사 중이거나 거절된 프로젝트는 후원할 수 없습니다.',
+      code: 'SPONSOR_NOT_ALLOWED'
+    });
+  }
+
+  if (roles.isProjectHost(req.user, project)) {
+    return res.status(403).json({
+      error: '본인이 개설한 프로젝트는 후원할 수 없습니다.',
+      code: 'FORBIDDEN'
+    });
   }
 
   const { amount, paymentMethod } = req.body;
-  const parsedAmount = parseInt(amount, 10);
-  if (isNaN(parsedAmount) || parsedAmount <= 0) {
-    return res.status(400).json({ error: '올바른 후원 금액을 입력해주세요.' });
+  const amountValidation = validate.validateSponsorAmount(amount);
+  if (!amountValidation.ok) {
+    return res.status(400).json({ error: amountValidation.error, code: amountValidation.code });
   }
+  const parsedAmount = amountValidation.value;
 
-  // Create donation record
   const donation = {
     id: 'donation-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
     userId: req.user.id,
     projectId: projectId,
     amount: parsedAmount,
     paymentMethod: paymentMethod || '신용카드',
-    status: 'holding', // holding, released, refunded
+    status: 'holding',
     createdAt: new Date().toISOString()
   };
-  donations.push(donation);
+  db.createDonation(donation);
 
-  // Update project current amount & progress percentage
   project.currentAmount = (project.currentAmount || 0) + parsedAmount;
   project.percentFunded = Math.round((project.currentAmount / project.goalAmount) * 100);
+  db.saveProject(project);
 
   res.json({ success: true, donation, project });
 });
 
-// 2. POST /api/projects (Register a new project)
 app.post('/api/projects', (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ error: '로그인이 필요합니다.' });
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
   }
 
-  const { title, category, goalAmount, story, emoji, gradient, daysLeft, escrowPlan } = req.body;
-  const parsedGoal = parseInt(goalAmount, 10);
-  const parsedDays = parseInt(daysLeft, 10) || 30;
-
-  if (!title || !category || isNaN(parsedGoal) || parsedGoal <= 0 || !story) {
-    return res.status(400).json({ error: '필수 정보를 모두 올바르게 입력해주세요.' });
+  const { title, category, goalAmount, story, emoji, gradient, daysLeft, escrowPlan, coverImage } = req.body;
+  const projectValidation = validate.validateProjectCreate({ title, category, goalAmount, story, daysLeft });
+  if (!projectValidation.ok) {
+    return res.status(400).json({ error: projectValidation.error, code: projectValidation.code });
   }
 
-  const newProject = {
-    id: projects.length + 1,
-    title,
-    category,
+  const newProject = db.createProject({
+    title: projectValidation.title,
+    category: projectValidation.category,
     hostName: req.user.name,
-    trustTemperature: 36.5, // starting trust temp
+    hostUserId: req.user.id,
+    trustTemperature: 36.5,
     successCount: 0,
     status: '심사 중',
-    goalAmount: parsedGoal,
+    goalAmount: projectValidation.goalAmount,
     currentAmount: 0,
     percentFunded: 0,
-    daysLeft: parsedDays,
+    daysLeft: projectValidation.daysLeft,
     gradient: gradient || 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     emoji: emoji || '🎂',
-    story: story,
-    escrowPlan: escrowPlan || '',
-    community: { notices: [], polls: [] },
+    coverImage: coverImage && String(coverImage).startsWith('/uploads/') ? coverImage : null,
+    story: projectValidation.story,
+    escrowPlan: String(escrowPlan || '').trim().slice(0, validate.LIMITS.escrowPlan),
+    submittedAt: new Date().toISOString(),
+    reviewNotes: [],
+    rejectedReason: '',
+    community: { notices: [], schedules: [], polls: [], posts: [] },
     refundPolicy: '목표 금액 미달성 시 전액 자동 환불됩니다. 펀딩 종료 후 7영업일 이내 결제 수단으로 환불 처리됩니다.'
-  };
+  });
 
-  projects.push(newProject);
   res.json({ success: true, project: newProject });
 });
 
-// 3. GET /api/users/me/escrow
 app.get('/api/users/me/escrow', (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ error: '로그인이 필요합니다.' });
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
   }
 
-  // Get all donations sponsored by user, joined with project metadata
+  const donations = db.getAllDonations();
   const userDonations = donations
     .filter((d) => d.userId === req.user.id)
     .map((d) => {
-      const p = projects.find((proj) => proj.id === d.projectId);
+      const p = db.getProjectById(d.projectId);
       return {
         ...d,
         projectTitle: p ? p.title : '알 수 없는 프로젝트',
@@ -624,8 +245,7 @@ app.get('/api/users/me/escrow', (req, res) => {
       };
     });
 
-  // Get projects hosted by user
-  const userProjects = projects.filter((p) => p.hostName === req.user.name);
+  const userProjects = db.getProjectsByHostUserId(req.user.id);
 
   res.json({
     success: true,
@@ -634,70 +254,389 @@ app.get('/api/users/me/escrow', (req, res) => {
   });
 });
 
-// 4. POST /api/donations/:id/refund
 app.post('/api/donations/:id/refund', (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ error: '로그인이 필요합니다.' });
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
   }
 
   const donationId = req.params.id;
-  const donation = donations.find((d) => d.id === donationId && d.userId === req.user.id);
-  if (!donation) {
-    return res.status(404).json({ error: '후원 내역을 찾을 수 없습니다.' });
+  const donation = db.getDonationById(donationId);
+  if (!donation || donation.userId !== req.user.id) {
+    return res.status(404).json({ error: '후원 내역을 찾을 수 없습니다.', code: 'DONATION_NOT_FOUND' });
   }
 
   if (donation.status !== 'holding') {
-    return res.status(400).json({ error: '이미 환불되거나 정산 완료된 내역은 환불할 수 없습니다.' });
+    return res.status(400).json({ error: '이미 환불되거나 정산 완료된 내역은 환불할 수 없습니다.', code: 'REFUND_NOT_ALLOWED' });
   }
 
-  const project = projects.find((p) => p.id === donation.projectId);
+  const project = db.getProjectById(donation.projectId);
   if (!project) {
-    return res.status(404).json({ error: '연관된 프로젝트를 찾을 수 없습니다.' });
+    return res.status(404).json({ error: '연관된 프로젝트를 찾을 수 없습니다.', code: 'PROJECT_NOT_FOUND' });
   }
 
-  // Check if project status allows refunding (e.g. still in funding)
   if (project.status !== '펀딩 진행 중' && project.status !== '심사 중') {
-    return res.status(400).json({ error: '펀딩 진행 중인 프로젝트만 취소/환불할 수 있습니다.' });
+    return res.status(400).json({ error: '펀딩 진행 중인 프로젝트만 취소/환불할 수 있습니다.', code: 'REFUND_NOT_ALLOWED' });
   }
 
-  // Mark donation as refunded
   donation.status = 'refunded';
+  db.updateDonation(donation);
 
-  // Subtract amount from project
   project.currentAmount = Math.max(0, (project.currentAmount || 0) - donation.amount);
   project.percentFunded = Math.round((project.currentAmount / project.goalAmount) * 100);
+  db.saveProject(project);
 
   res.json({ success: true, donation, project });
 });
 
+registerCommunityRoutes(app, db);
+registerAdminRoutes(app, db);
+registerActivityRoutes(app, db);
+registerFavoritesRoutes(app, db);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/api/config/public', (req, res) => {
+  res.json({
+    success: true,
+    kakaoMapKey: kakaoMap.getJavascriptKey() || null,
+    kakaoGeocodeEnabled: kakaoMap.isGeocodeConfigured()
+  });
+});
+
+app.get('/api/maps/geocode', async (req, res) => {
+  const query = String(req.query.query || req.query.q || '').trim();
+  if (!query) {
+    return res.status(400).json({ error: 'query가 필요합니다.', code: 'VALIDATION_ERROR' });
+  }
+  if (!kakaoMap.isGeocodeConfigured()) {
+    return res.status(503).json({
+      error: '카카오 REST API 키가 설정되지 않았습니다.',
+      code: 'MAP_NOT_CONFIGURED',
+      mapUrl: kakaoMap.buildMapSearchUrl(query)
+    });
+  }
+  try {
+    const result = await kakaoMap.geocodeAddress(query);
+    if (!result) {
+      return res.status(404).json({
+        error: '장소를 찾을 수 없습니다.',
+        code: 'PLACE_NOT_FOUND',
+        mapUrl: kakaoMap.buildMapSearchUrl(query)
+      });
+    }
+    res.json({
+      success: true,
+      ...result,
+      mapUrl: kakaoMap.buildMapLinkUrl(result.lat, result.lng, result.placeName)
+    });
+  } catch (err) {
+    console.error('[Geocode]', err);
+    res.status(500).json({ error: '지도 검색에 실패했습니다.', code: 'GEOCODE_FAILED' });
+  }
+});
+
+app.post('/api/upload/project-cover', (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
+  }
+  projectCoverUpload.single('cover')(req, res, (err) => {
+    if (err) {
+      const message = err.message || '이미지 업로드에 실패했습니다.';
+      return res.status(400).json({ error: message, code: 'UPLOAD_ERROR' });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: '이미지 파일을 선택해 주세요.', code: 'VALIDATION_ERROR' });
+    }
+    res.json({ success: true, url: `/uploads/covers/${req.file.filename}` });
+  });
+});
+
+app.get('/api/users/me/escrow/export.csv', (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' });
+  }
+
+  const donations = db.getAllDonations().filter((d) => d.userId === req.user.id);
+  const rows = donations.map((d) => {
+    const p = db.getProjectById(d.projectId);
+    return {
+      projectTitle: p ? p.title : '알 수 없음',
+      amount: d.amount,
+      status: d.status,
+      paymentMethod: d.paymentMethod,
+      createdAt: d.createdAt
+    };
+  });
+
+  csvExport.sendCsv(res, 'my-donations.csv', rows, [
+    { key: 'projectTitle', label: '프로젝트' },
+    { key: 'amount', label: '금액' },
+    { key: 'status', label: '상태' },
+    { key: 'paymentMethod', label: '결제수단' },
+    { key: 'createdAt', label: '일시' }
+  ]);
+});
+
+app.get('/api/admin/projects/pending', roles.requireAdmin, (req, res) => {
+  const pending = db
+    .getPendingProjects()
+    .map((p) => roles.toPublicProject(p, { includeAdminFields: true }));
+  res.json({ success: true, projects: pending });
+});
+
+app.get('/api/admin/projects/:id', roles.requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const project = db.getProjectById(id);
+  if (!project) {
+    return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.', code: 'PROJECT_NOT_FOUND' });
+  }
+  const stats = roles.getProjectStats(id, db.getAllDonations());
+  res.json({
+    success: true,
+    project: roles.toPublicProject(project, { includeAdminFields: true, ...stats })
+  });
+});
+
+app.post('/api/admin/projects/:id/review', roles.requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const project = db.getProjectById(id);
+  if (!project) {
+    return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.', code: 'PROJECT_NOT_FOUND' });
+  }
+  if (project.status !== '심사 중') {
+    return res.status(400).json({ error: '심사 중인 프로젝트만 처리할 수 있습니다.', code: 'REVIEW_NOT_ALLOWED' });
+  }
+
+  const { action, reason } = req.body;
+  if (action === 'approve') {
+    project.status = '펀딩 진행 중';
+    project.featured = true;
+    project.rejectedReason = '';
+    project.reviewNotes.push({
+      date: new Date().toISOString().slice(0, 10),
+      action: 'approve',
+      by: req.user.email,
+      note: '심사 승인 — 펀딩 오픈'
+    });
+    adminLib.sendHostDm(
+      project,
+      req.user,
+      '축하합니다! 프로젝트 심사가 승인되었습니다. 펀딩이 시작되었으며 메인 추천 목록에 노출됩니다.',
+      { type: 'approve' }
+    );
+  } else if (action === 'reject') {
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ error: '거절 사유를 입력해 주세요.', code: 'VALIDATION_ERROR' });
+    }
+    project.status = '심사 거절';
+    project.rejectedReason = reason.trim();
+    project.reviewNotes.push({
+      date: new Date().toISOString().slice(0, 10),
+      action: 'reject',
+      by: req.user.email,
+      note: reason.trim()
+    });
+    adminLib.sendHostDm(
+      project,
+      req.user,
+      `심사 결과 안내: 프로젝트가 거절되었습니다.\n\n거절 사유:\n${reason.trim()}\n\n내용을 보완한 뒤 다시 신청해 주세요.`,
+      { type: 'reject' }
+    );
+  } else {
+    return res.status(400).json({ error: 'action은 approve 또는 reject여야 합니다.', code: 'VALIDATION_ERROR' });
+  }
+
+  db.saveProject(project);
+  res.json({ success: true, project });
+});
+
+const publicDir = path.join(__dirname, 'public');
+
+app.get('/detail.html', (req, res) => {
+  const id = req.query.id;
+  if (!id) {
+    return res.redirect('/error.html?code=404');
+  }
+  const params = new URLSearchParams();
+  if (req.query.tab) params.set('tab', req.query.tab);
+  if (req.query.post) params.set('post', req.query.post);
+  const qs = params.toString();
+  res.redirect(301, qs ? `/projects/${id}?${qs}` : `/projects/${id}`);
+});
+
+app.get('/admin.html', (req, res) => {
+  const id = req.query.id;
+  if (id) {
+    return res.redirect(301, `/admin/projects/${id}`);
+  }
+  const view = req.query.view;
+  res.redirect(301, view ? `/admin?view=${encodeURIComponent(view)}` : '/admin');
+});
+
+app.get('/projects/:id/posts/:postId', (req, res) => {
+  res.sendFile(path.join(publicDir, 'detail.html'));
+});
+
+app.get('/projects/:id', (req, res) => {
+  res.sendFile(path.join(publicDir, 'detail.html'));
+});
+
+app.get('/admin/projects/:id', (req, res) => {
+  res.sendFile(path.join(publicDir, 'admin.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(publicDir, 'admin.html'));
+});
+
+app.get('/mypage', (req, res) => {
+  res.sendFile(path.join(publicDir, 'mypage.html'));
+});
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(publicDir));
 
 app.get('/api/hero-slides', (req, res) => {
   res.json(heroSlides);
 });
 
+app.get('/api/projects', (req, res) => {
+  const { q = '', category = '', artist = '', filter = 'featured', sort = '' } = req.query;
+  const { limit, offset } = validate.parsePagination(req.query);
+  const normalizedSort = validate.normalizeSort(sort);
+  const all = projectList.listProjects(db.getAllProjects(), {
+    q,
+    category,
+    artist,
+    filter,
+    sort: normalizedSort
+  });
+  const page = projectList.paginate(all, limit, offset);
+  res.json({
+    success: true,
+    filter,
+    category: category || null,
+    artist: artist || null,
+    q: q || null,
+    sort: normalizedSort || null,
+    label: projectList.FILTER_LABELS[filter] || '프로젝트 목록',
+    count: page.total,
+    limit: page.limit,
+    offset: page.offset,
+    hasMore: page.hasMore,
+    projects: page.items.map(projectList.toListCard)
+  });
+});
+
 app.get('/api/projects/featured', (req, res) => {
-  const featured = projects.filter((p) => p.featured);
-  res.json(featured);
+  res.json(db.getFeaturedProjects());
 });
 
 app.get('/api/projects/popular', (req, res) => {
-  const popular = projects
-    .filter((p) => p.popularRank != null)
-    .sort((a, b) => a.popularRank - b.popularRank);
-  res.json(popular);
+  res.json(db.getPopularProjects());
 });
 
 app.get('/api/projects/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const project = projects.find((p) => p.id === id);
+  const project = db.getProjectById(id);
   if (!project) {
-    return res.status(404).json({ error: 'Not found' });
+    return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.', code: 'PROJECT_NOT_FOUND' });
   }
-  res.json(project);
+
+  const communityBefore = JSON.stringify(project.community || {});
+  community.ensureCommunity(project);
+  if (JSON.stringify(project.community) !== communityBefore) {
+    db.saveProject(project);
+  }
+
+  const donations = db.getAllDonations();
+  const viewerRole = roles.getViewerRole(req.user, project);
+  const stats = roles.getProjectStats(id, donations);
+
+  let myDonation = null;
+  if (req.user) {
+    const donation = donations.find(
+      (d) => d.userId === req.user.id && d.projectId === id && d.status === 'holding'
+    );
+    if (donation) {
+      myDonation = {
+        id: donation.id,
+        amount: donation.amount,
+        status: donation.status,
+        paymentMethod: donation.paymentMethod,
+        createdAt: donation.createdAt
+      };
+    }
+  }
+
+  const includeHost = viewerRole === 'host' || viewerRole === 'admin';
+  const includeAdmin = viewerRole === 'admin';
+
+  if (req.user) {
+    activity.recordActivity(db, req.user.id, 'view', {
+      projectId: id,
+      title: project.title
+    });
+  }
+
+  res.json({
+    viewerRole,
+    project: roles.toPublicProject(project, {
+      includeHostFields: includeHost,
+      includeAdminFields: includeAdmin,
+      ...stats
+    }),
+    myDonation,
+    hostStats: includeHost
+      ? {
+          sponsorCount: stats.sponsorCount,
+          escrowHolding: stats.escrowHolding,
+          totalDonations: stats.totalDonations
+        }
+      : null
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Duckrowd demo server running at http://localhost:${PORT}`);
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    error: '요청한 API를 찾을 수 없습니다.',
+    code: 'API_NOT_FOUND'
+  });
 });
+
+app.use((req, res) => {
+  const from = encodeURIComponent(req.originalUrl);
+  res.redirect(`/error.html?code=404&from=${from}`);
+});
+
+app.use((err, req, res, next) => {
+  console.error('[Server Error]', err.stack || err);
+
+  if (req.path.startsWith('/api/') || req.originalUrl.startsWith('/api/')) {
+    return res.status(500).json({
+      error: '서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+      code: 'INTERNAL_SERVER_ERROR'
+    });
+  }
+
+  const message = encodeURIComponent(err.message || '');
+  res.redirect(`/error.html?code=500&message=${message}`);
+});
+
+async function startServer() {
+  try {
+    await oauth.initGoogleOAuth();
+  } catch (error) {
+    console.error('Google OAuth discovery failed:', error.message);
+  }
+
+  const authStatus = oauth.getAuthStatus();
+  app.listen(PORT, () => {
+    console.log(`Duckrowd demo server running at http://localhost:${PORT}`);
+    console.log(`Redirect base: ${authStatus.redirectBase}`);
+    console.log(`Google OAuth: ${authStatus.google ? 'enabled' : 'NOT configured — set .env'}`);
+    console.log(`Kakao OAuth:  ${authStatus.kakao ? 'enabled' : 'NOT configured — set .env'}`);
+    console.log(`Kakao Map JS: ${kakaoMap.getJavascriptKey() ? 'enabled' : 'NOT configured — set KAKAO_MAP_JAVASCRIPT_KEY'}`);
+    console.log(`Kakao Geocode: ${kakaoMap.isGeocodeConfigured() ? 'enabled (REST key)' : 'NOT configured'}`);
+  });
+}
+
+startServer();

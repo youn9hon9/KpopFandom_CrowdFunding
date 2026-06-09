@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Duckrowd | My Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Noto+Sans+KR:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .trust-gradient {
+            background: linear-gradient(90deg, #00C471 0%, #37c275 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00210e",
+                        "surface-bright": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-high": "#eae7e7",
+                        "on-tertiary-fixed-variant": "#00522b",
+                        "secondary-container": "#fd761a",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#bbcbbc",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-variant": "#e5e2e1",
+                        "secondary-fixed-dim": "#ffb690",
+                        "surface-container": "#f0eded",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-surface": "#1c1b1b",
+                        "surface": "#fcf9f8",
+                        "surface-tint": "#006d3c",
+                        "on-background": "#1c1b1b",
+                        "on-secondary-fixed": "#341100",
+                        "primary-fixed": "#63fea4",
+                        "surface-container-highest": "#e5e2e1",
+                        "secondary": "#9d4300",
+                        "primary-fixed-dim": "#40e18a",
+                        "primary": "#006d3c",
+                        "on-tertiary-container": "#004a26",
+                        "on-secondary-fixed-variant": "#783200",
+                        "outline": "#6c7b6e",
+                        "on-tertiary-fixed": "#00210e",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#00c471",
+                        "on-secondary-container": "#5c2400",
+                        "background": "#fcf9f8",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#006d3b",
+                        "tertiary-fixed": "#78fca8",
+                        "on-surface-variant": "#3c4a3f",
+                        "tertiary-container": "#37c275",
+                        "on-primary-fixed-variant": "#00522c",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#004a27",
+                        "inverse-primary": "#40e18a",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#59df8e",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit_xl": "48px",
+                        "max_width": "1200px",
+                        "unit_lg": "24px",
+                        "container_padding": "24px",
+                        "header_height": "64px",
+                        "unit_xs": "4px",
+                        "unit_sm": "8px",
+                        "unit_md": "16px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Noto Sans KR"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Noto Sans KR"],
+                        "body-lg": ["Noto Sans KR"],
+                        "label-sm": ["Noto Sans KR"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- Top Navigation Bar -->
+<header class="bg-surface dark:bg-surface-container-high shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center h-header_height px-container_padding max-w-max_width mx-auto">
+<div class="flex items-center gap-unit_md">
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-inverse-primary">Duckrowd</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-unit_md py-unit_xs rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md" placeholder="Search projects..." type="text"/>
+</div>
+</div>
+<nav class="flex items-center gap-unit_lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors text-label-md font-label-md" href="#">Start Project</a>
+<div class="flex items-center gap-unit_sm border-l border-outline-variant pl-unit_lg">
+<img alt="User Profile" class="w-8 h-8 rounded-full bg-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyknAUnbuxchonIZww6qO0DX8WhTQrFoGRW4KcUxXWrI7AKZSzHqGMilB-lA2cKTbTP8AIqMrD-c15_EJS6mZA86OWSDmkw6OJs1kFvOnOZImKfGIZM5Jjo2Gpq8iyS0ajqz1h3gvF21NvxCaojjPYKRlWf5sw1ab2hUXram_frCel72_VJNLGt6ZD7eZ7o6DW9xRNwbveoN0GrvcQb_3EE3QYBCwUKkHoDlr4qdcHXYyKcJxaZNj35zv0srU3Pjr8aTng5s_z3JgF"/>
+<span class="hidden md:block text-label-md font-bold text-primary">My Page</span>
+</div>
+</nav>
+</div>
+</header>
+<main class="max-w-max_width mx-auto px-container_padding py-unit_xl">
+<!-- User Profile Header -->
+<section class="mb-unit_xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-unit_lg">
+<div class="flex items-center gap-unit_lg">
+<div class="relative">
+<img alt="Felix" class="w-24 h-24 rounded-full border-4 border-white shadow-md bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6tk2aCO8-vzbJ-7CZ2E16wakUF8XoYrYhUnbiIVcylgLDFJzP5D17qTuP7H-ycnT8LdQSssOqf4eHMRP_gDGxIkl0imMkHC0sDKuZk949C5ax9_nMew-UsT_ixseiPOJv_oMQPueDQUjuNy8mEli8MMTldk1IP8DcSSFGfGp-nLj-VCcVzhSqwOJtXrgARFSDHehBBQXwTmeZToqmI0m_kQFPmThK1GJO1K8XFJjp6Ry2qXXcNhaDg0zJc3sT3_rTvPZPcNTul9xB"/>
+<div class="absolute bottom-0 right-0 bg-primary p-1.5 rounded-full border-2 border-white">
+<span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface">Kim Felix</h1>
+<p class="text-on-surface-variant font-label-md">Level 4 Transparent Supporter</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-unit_md w-full md:w-auto">
+<!-- Statistics Cards -->
+<div class="bg-white p-unit_md rounded-xl shadow-sm border border-outline-variant text-center flex flex-col justify-center min-w-[120px]">
+<span class="text-label-sm text-on-surface-variant block mb-unit_xs">Supported</span>
+<span class="text-headline-md font-bold text-primary">12</span>
+</div>
+<div class="bg-white p-unit_md rounded-xl shadow-sm border border-outline-variant text-center flex flex-col justify-center min-w-[120px]">
+<span class="text-label-sm text-on-surface-variant block mb-unit_xs">Hosted</span>
+<span class="text-headline-md font-bold text-secondary">2</span>
+</div>
+<div class="bg-white p-unit_md rounded-xl shadow-sm border border-outline-variant text-center flex flex-col justify-center min-w-[120px]">
+<span class="text-label-sm text-on-surface-variant block mb-unit_xs">Liked</span>
+<span class="text-headline-md font-bold text-on-surface">48</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area with Tabs -->
+<section>
+<!-- Navigation Tabs -->
+<div class="flex border-b border-outline-variant mb-unit_lg overflow-x-auto whitespace-nowrap">
+<button class="px-unit_lg py-unit_md text-label-md font-bold text-primary border-b-2 border-primary">My Backing</button>
+<button class="px-unit_lg py-unit_md text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors">Created Projects</button>
+<button class="px-unit_lg py-unit_md text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors">Community Activity</button>
+<button class="px-unit_lg py-unit_md text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors">Liked</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-unit_xl">
+<!-- Escrow Item Cards List -->
+<div class="lg:col-span-2 space-y-unit_lg">
+<h2 class="text-headline-md font-headline-md mb-unit_md">Current Backing Status</h2>
+<!-- Escrow Item 1 -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden border border-outline-variant hover:shadow-md transition-shadow">
+<div class="p-unit_md flex gap-unit_md">
+<div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional live concert stage with bright green laser lights and a crowd of enthusiastic fans in a modern, high-tech stadium. The atmosphere is energetic and safe, with high-quality cinematic lighting reflecting a premium music event aesthetic within the Duckrowd platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5cv_rfbOjD-oIEo27ZKgQV-OcFBOG9vZbJas3OC2E7GYXssyDWwy-M7wDcsf4OQyOZ0HXbZ9Vg_LqSNv52u0iZwbQ_E1cf48DK1xqmSNBtmJEou0hP2Lm8_Wo35PbOTZQ-N6f3nI-kTldrpxunN4HPNEK2hPBqA_U0DAv-d0Au6bZ1or_bwmvI1AIfqNSQbiOwTba0pEyFGEMhwOxHu4uuR1UYRM3T5IIvbUj70U6P-BCDOn-4a1CK9pasCyJQBfbou54zYJaGyk6"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-primary-fixed text-on-primary-fixed text-[10px] uppercase font-bold px-2 py-0.5 rounded-full mb-1 inline-block">Safe Holding</span>
+<h3 class="text-body-lg font-bold text-on-surface leading-tight">Aespa World Tour 2024 Support Project</h3>
+</div>
+<button class="text-error font-label-md hover:underline">Refund</button>
+</div>
+<div class="mt-unit_sm">
+<div class="flex justify-between text-label-sm mb-1">
+<span class="text-on-surface-variant">Trust Temperature</span>
+<span class="text-primary font-bold">84%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="trust-gradient h-full w-[84%]"></div>
+</div>
+</div>
+<div class="mt-unit_sm flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant">Amount: <span class="text-on-surface font-bold">50,000 KRW</span></span>
+<span class="text-label-sm text-on-surface-variant">Escrow Ends: 2024.12.15</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Escrow Item 2 -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden border border-outline-variant hover:shadow-md transition-shadow">
+<div class="p-unit_md flex gap-unit_md">
+<div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up of a stylish, limited edition K-pop idol photo card and collectible merchandise displayed on a clean white surface with soft studio lighting. The aesthetic is corporate yet friendly, focusing on the quality and authenticity of the fan goods, utilizing a palette of mint green and neutral whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZS-wapTtwxtgDFaFgHZL9N4Js9czLqYzM6QGSy5HrH3ezRtyTQU9R3R2NE6Xnul-8PtE_MSxBtJqii5ZI0Bx8RDlWEnRyVUiLaUko8pwfKpTXDfjA8EyBnLvktAGC5B-099UGMKlGP-uPuap0g4-dbUZ8UeuKPFH7Tnb03wJ2K9Fg6yn0VuxFrqAI8LD6LHR9K9Ik7nrRQjDWmbwhESvgZZOtimGn_4GPx-iMiLTnG4hOgZuxzohmAj8mxv5fXDUVqFhD7VjOZ9h"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-primary-fixed text-on-primary-fixed text-[10px] uppercase font-bold px-2 py-0.5 rounded-full mb-1 inline-block">Safe Holding</span>
+<h3 class="text-body-lg font-bold text-on-surface leading-tight">NewJeans Limited Edition Photo Book Funding</h3>
+</div>
+<button class="text-error font-label-md hover:underline">Refund</button>
+</div>
+<div class="mt-unit_sm">
+<div class="flex justify-between text-label-sm mb-1">
+<span class="text-on-surface-variant">Trust Temperature</span>
+<span class="text-primary font-bold">92%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="trust-gradient h-full w-[92%]"></div>
+</div>
+</div>
+<div class="mt-unit_sm flex items-center justify-between">
+<span class="text-label-sm text-on-surface-variant">Amount: <span class="text-on-surface font-bold">35,000 KRW</span></span>
+<span class="text-label-sm text-on-surface-variant">Escrow Ends: 2024.11.20</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Activity History Sidebar -->
+<aside class="space-y-unit_lg">
+<div class="bg-surface-container-low rounded-xl p-unit_lg border border-outline-variant">
+<h2 class="text-headline-md font-headline-md mb-unit_md">Activity History</h2>
+<ul class="space-y-unit_md">
+<li class="flex gap-unit_sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]">payments</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Backed <span class="font-bold">Aespa Support Project</span></p>
+<span class="text-label-sm text-on-surface-variant">2 hours ago</span>
+</div>
+</li>
+<li class="flex gap-unit_sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-[20px]">favorite</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Liked <span class="font-bold">IVE Comeback Coffee Truck</span></p>
+<span class="text-label-sm text-on-surface-variant">Yesterday</span>
+</div>
+</li>
+<li class="flex gap-unit_sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container text-[20px]">comment</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Commented on <span class="font-bold">NewJeans Merch</span></p>
+<span class="text-label-sm text-on-surface-variant">2 days ago</span>
+</div>
+</li>
+<li class="flex gap-unit_sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">person_add</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Followed <span class="font-bold">Duckrowd Official</span></p>
+<span class="text-label-sm text-on-surface-variant">5 days ago</span>
+</div>
+</li>
+</ul>
+<button class="w-full mt-unit_lg py-unit_sm border border-primary text-primary rounded-full font-label-md hover:bg-primary-container/10 transition-colors">
+                            View All Activity
+                        </button>
+</div>
+</aside>
+</div>
+</section>
+</main>
+<!-- Footer Section -->
+<footer class="bg-surface-container-low dark:bg-surface-dim full-width border-t border-outline-variant dark:border-outline">
+<div class="w-full py-unit_xl px-container_padding max-w-max_width mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-unit_lg">
+<div class="space-y-unit_sm text-center md:text-left">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface">Duckrowd</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant">© 2024 Duckrowd. Transparently Enthusiastic.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-unit_lg">
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Platform Info</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Social Links</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for refund buttons
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Refund')) {
+                button.addEventListener('click', () => {
+                    const confirmRefund = confirm("Are you sure you want to request a refund? The escrow process will be initiated.");
+                    if (confirmRefund) {
+                        alert("Refund request submitted for verification.");
+                        button.closest('.bg-white').style.opacity = '0.5';
+                        button.textContent = 'Processing...';
+                        button.disabled = true;
+                    }
+                });
+            }
+        });
+
+        // Tab switching logic (Visual only)
+        const tabs = document.querySelectorAll('button.px-unit_lg.py-unit_md');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+                    t.classList.add('text-on-surface-variant', 'font-label-md');
+                });
+                tab.classList.add('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+                tab.classList.remove('text-on-surface-variant', 'font-label-md');
+            });
+        });
+    </script>
+</body></html>
